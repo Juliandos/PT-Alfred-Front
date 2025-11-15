@@ -19,13 +19,20 @@ export const useAirportStore = create<AirportStore>((set) => ({
     set({ loading: true });
 
     try {
-      const data = await listAirports({
+      const response = await listAirports({
         search,
         limit: 10,
         offset: (page - 1) * 10,
       });
 
-      set({ airports: data.data });
+      // La API devuelve { data: [...], pagination: {...} }
+      // Extraemos solo el array de aeropuertos
+      const airportsData = response.data || [];
+      
+      set({ airports: airportsData });
+    } catch (error) {
+      console.error('Error fetching airports:', error);
+      set({ airports: [] }); // En caso de error, array vacío
     } finally {
       set({ loading: false });
     }
@@ -34,9 +41,12 @@ export const useAirportStore = create<AirportStore>((set) => ({
   fetchAirportDetails: async (id) => {
     set({ loading: true });
     try {
-      const data = await getAirportById(id);
-      console.log('resultado fetchAirportDetails:', data);
-      set({ selectedAirport: data });
+      const airport = await getAirportById(id);
+      console.log('resultado fetchAirportDetails:', airport);
+      set({ selectedAirport: airport });
+    } catch (error) {
+      console.error('Error fetching airport details:', error);
+      set({ selectedAirport: null });
     } finally {
       set({ loading: false });
     }
