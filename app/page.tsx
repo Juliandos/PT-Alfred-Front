@@ -43,26 +43,97 @@ export default function Home() {
 
   if (showResults) {
     return (
-      <div className="min-h-screen p-6 bg-white dark:bg-gray-900">
-        <button
-          onClick={() => setShowResults(false)}
-          className="mb-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition-colors"
-        >
-          ⬅ Volver al inicio
-        </button>
+      <div className="relative min-h-screen w-full overflow-hidden">
+        {/* Fondo */}
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-all duration-500"
+          style={{
+            backgroundImage: theme === "light" 
+              ? "url(/airport-bg-light.jpg)" 
+              : "url(/airport-bg.jpg)",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            filter: theme === "light" ? "brightness(1.1) contrast(1.05)" : "brightness(0.6) contrast(1.1)",
+          }}
+        />
+        <div 
+          className={`absolute inset-0 transition-all duration-500 ${
+            theme === "dark" 
+              ? "bg-[#000B1A] opacity-70" 
+              : "bg-gradient-to-br from-blue-50/50 via-cyan-50/40 to-white/50 opacity-50"
+          }`}
+        />
 
-        <div className="w-full max-w-lg mx-auto mb-6">
-          <input
-            type="text"
-            placeholder="Buscar aeropuertos..."
-            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 shadow-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
+        {/* Contenido */}
+        <div className="relative z-10 min-h-screen p-6 md:p-8">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <h1
+                className={`font-montserrat-black text-3xl md:text-4xl lg:text-5xl ${
+                  theme === "dark" ? "gradient-text" : ""
+                }`}
+                style={
+                  theme === "light"
+                    ? {
+                        background: "linear-gradient(90deg, #1e40af 0%, #1e3a8a 20%, #1e3a8a 40%, #1e40af 60%, #2563eb 80%, #3b82f6 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                        filter: "contrast(1.2) brightness(0.95)",
+                      }
+                    : {
+                        textShadow: "0 0 40px rgba(0, 249, 255, 0.3)",
+                      }
+                }
+              >
+                SkyConnect Explorer
+              </h1>
+
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Buscar aeropuertos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className={`px-4 py-2 rounded-lg text-sm md:text-base outline-none transition-all duration-300 ${
+                    theme === "dark"
+                      ? "bg-white/95 text-gray-900 placeholder:text-cyan-500/70 border-2 border-transparent shadow-[0_4px_16px_rgba(0,249,255,0.2)] focus:shadow-[0_4px_16px_rgba(0,249,255,0.4)] focus:border-cyan-300/50"
+                      : "bg-white/98 text-gray-800 placeholder:text-blue-500/70 border-2 border-transparent shadow-[0_4px_16px_rgba(0,106,255,0.25)] focus:shadow-[0_4px_16px_rgba(0,106,255,0.4)] focus:border-blue-300/50"
+                  }`}
+                />
+                <button
+                  onClick={handleSearch}
+                  className={`px-4 md:px-6 py-2 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 hover:scale-105 active:scale-95 ${
+                    theme === "dark"
+                      ? "bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 border-2 border-cyan-300/50 text-white shadow-[0_4px_16px_rgba(0,249,255,0.4)] hover:shadow-[0_6px_20px_rgba(0,249,255,0.6)]"
+                      : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 border-2 border-blue-400/60 text-white shadow-[0_4px_16px_rgba(0,106,255,0.5)] hover:shadow-[0_6px_20px_rgba(0,106,255,0.7)]"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <SearchIcon size={18} />
+                    <span className="hidden sm:inline">Buscar</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowResults(false)}
+              className={`px-4 py-2 rounded-md transition-colors ${
+                theme === "dark"
+                  ? "bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                  : "bg-white/90 hover:bg-white text-gray-800 border border-blue-200/30"
+              }`}
+            >
+              ⬅ Volver al inicio
+            </button>
+          </div>
+
+          {/* Grid de resultados */}
+          <AirportTable data={airports} loading={loading} />
         </div>
-
-        <AirportTable data={airports} loading={loading} />
       </div>
     );
   }
