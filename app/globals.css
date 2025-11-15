@@ -2,18 +2,18 @@
 
 /* Importar fuente Gotham Black - Si no la tienes, puedes usar una alternativa */
 /* Opción 1: Si tienes Gotham Black descargada */
-/*
+
 @font-face {
   font-family: 'Gotham Black';
-  src: url('/fonts/GothamBlack.woff2') format('woff2'),
+  src: url('/fonts/Montserrat/') format('woff2'),
        url('/fonts/GothamBlack.woff') format('woff');
   font-weight: 900;
   font-style: normal;
 }
-*/
+
 
 /* Opción 2: Alternativa usando Montserrat Black (similar a Gotham) */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap'); */
 
 :root {
   --background: #ffffff;
