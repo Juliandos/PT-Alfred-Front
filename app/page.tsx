@@ -73,30 +73,43 @@ export default function Home() {
 
       {/* Fondo */}
       <div
-        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500"
+        className="absolute inset-0 bg-cover bg-center transition-all duration-500"
         style={{
-          backgroundImage: "url(/airport-bg.jpg)",
+          backgroundImage: theme === "light" 
+            ? "url(/airport-bg-light.jpg)" 
+            : "url(/airport-bg.jpg)",
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: theme === "light" ? "brightness(1.2) contrast(0.9)" : "brightness(0.6) contrast(1.1)",
+          filter: theme === "light" ? "brightness(1.1) contrast(1.05)" : "brightness(0.6) contrast(1.1)",
         }}
       />
       <div 
         className={`absolute inset-0 transition-all duration-500 ${
           theme === "dark" 
             ? "bg-[#000B1A] opacity-70" 
-            : "bg-gradient-to-br from-blue-50/80 via-cyan-50/60 to-white/70 opacity-60"
+            : "bg-gradient-to-br from-blue-50/50 via-cyan-50/40 to-white/50 opacity-50"
         }`}
       />
 
       <div className="relative z-10 w-full max-w-[1000px] flex flex-col items-center gap-8 md:gap-12">
 
         <h1
-          className={`gradient-text font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight transition-all duration-500 ${
-            theme === "dark" 
-              ? "drop-shadow-[0_0_40px_rgba(0,249,255,0.3)]" 
-              : "drop-shadow-[0_0_30px_rgba(0,106,255,0.4)]"
+          className={`font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight transition-all duration-500 ${
+            theme === "dark" ? "gradient-text" : ""
           }`}
+          style={
+            theme === "light"
+              ? {
+                  background: "linear-gradient(90deg, #1e40af 0%, #1e3a8a 20%, #1e3a8a 40%, #1e40af 60%, #2563eb 80%, #3b82f6 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  filter: "contrast(1.2) brightness(0.95)",
+                }
+              : {
+                  textShadow: "0 0 40px rgba(0, 249, 255, 0.3)",
+                }
+          }
         >
           SkyConnect Explorer
         </h1>
