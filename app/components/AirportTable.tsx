@@ -15,7 +15,13 @@ export default function AirportTable({ data, loading }: Props) {
     return <div className="text-center py-10">Cargando...</div>;
   }
 
-  if (!data || data.length === 0) {
+  // Validación: asegurarse de que data es un array
+  if (!Array.isArray(data)) {
+    console.error('Error: data no es un array', data);
+    return <div className="text-center py-10 text-red-500">Error: Formato de datos incorrecto</div>;
+  }
+
+  if (data.length === 0) {
     return <div className="text-center py-10">No hay resultados</div>;
   }
 
@@ -34,13 +40,13 @@ export default function AirportTable({ data, loading }: Props) {
         <tbody>
           {data.map((airport: any, index: number) => (
             <tr
-              key={index}
+              key={airport.iata_code || index}
               className="border-t hover:bg-gray-50 cursor-pointer"
               onClick={() => router.push(`/airport/${airport.iata_code}`)}
             >
               <td className="p-3">{airport.airport_name}</td>
-              <td className="p-3">{airport.city_iata}</td>
-              <td className="p-3">{airport.country_name}</td>
+              <td className="p-3">{airport.city_iata_code}</td>
+              <td className="p-3">{airport.country_name || 'N/A'}</td>
               <td className="p-3 font-bold">{airport.iata_code}</td>
             </tr>
           ))}
