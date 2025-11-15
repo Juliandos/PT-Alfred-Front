@@ -11,7 +11,7 @@ export default function AirportSearch() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       fetchAirports({ search: query, page: 1 });
-    }, 500);
+    }, 300);
 
     console.log('query', query)
 
