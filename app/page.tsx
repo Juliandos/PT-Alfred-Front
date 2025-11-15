@@ -82,8 +82,8 @@ export default function Home() {
       <div 
         className="absolute inset-0"
         style={{
-          backgroundColor: '#006AFF',
-          opacity: 0.2
+          backgroundColor: '#000B1A',
+          opacity: 0.7
         }}
       />
 

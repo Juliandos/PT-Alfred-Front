@@ -109,6 +109,16 @@
   /* Colores para inputs */
   --input-bg: rgba(255, 255, 255, 0.95);
   --placeholder-color: #00F9FF;
+
+  /* Gradiente Título */
+  --gradient-primary: linear-gradient(
+    90deg,
+    #0a46ff 0%,
+    #0074ff 25%,
+    #00c3ff 50%,
+    #00eaff 75%,
+    #00f2ff 100%
+  );
 }
 
 @theme inline {
