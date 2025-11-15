@@ -1,7 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+// Componente de ícono de lupa personalizado
+const SearchIcon = ({ size = 20 }: { size?: number }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+);
 import AirportTable from "./components/AirportTable";
 import { useAirportStore } from "./stores/airport.store";
 
@@ -68,7 +83,7 @@ export default function Home() {
         className="absolute inset-0"
         style={{
           backgroundColor: '#006AFF',
-          opacity: 0.85
+          opacity: 0.2
         }}
       />
 
@@ -77,14 +92,8 @@ export default function Home() {
         
         {/* Título con gradiente */}
         <h1 
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] font-black text-center leading-none tracking-tight"
+          className="gradient-text font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight"
           style={{
-            background: 'linear-gradient(90deg, #006AFF 0%, #00F9FF 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            fontFamily: 'Montserrat, system-ui, -apple-system, sans-serif',
-            fontWeight: 900,
             textShadow: '0 0 40px rgba(0, 249, 255, 0.3)'
           }}
         >
@@ -134,10 +143,7 @@ export default function Home() {
           }}
         >
           <div className="flex items-center gap-3">
-            <Search 
-              size={20} 
-              className="transition-transform duration-300 group-hover:rotate-12"
-            />
+            <SearchIcon size={20} />
             <span>Buscar</span>
           </div>
         </button>
