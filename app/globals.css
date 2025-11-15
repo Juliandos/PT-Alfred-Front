@@ -129,14 +129,23 @@
 }
 
 /* ============================================
-   TEMA OSCURO (Opcional)
+   TEMA OSCURO
    ============================================ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --text-primary: #1a1a1a;
+  --input-bg: rgba(255, 255, 255, 0.95);
+  --placeholder-color: #00F9FF;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --text-primary: #ededed;
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --placeholder-color: #00F9FF;
 }
 
 /* ============================================
@@ -241,6 +250,10 @@ input:focus {
   border-radius: 5px;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 ::-webkit-scrollbar-thumb {
   background: var(--gradient-primary);
   border-radius: 5px;
@@ -255,6 +268,10 @@ input:focus {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-blue) rgba(0, 0, 0, 0.1);
+}
+
+.dark * {
+  scrollbar-color: var(--primary-blue) rgba(255, 255, 255, 0.05);
 }
 
 /* ============================================
