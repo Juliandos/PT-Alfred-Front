@@ -3,6 +3,7 @@
 import { useState } from "react";
 import AirportTable from "./components/AirportTable";
 import { useAirportStore } from "./stores/airport.store";
+import { useThemeStore } from "./stores/theme.store";
 
 const SearchIcon = ({ size = 20 }: { size?: number }) => (
   <svg
@@ -27,6 +28,7 @@ export default function Home() {
 
   const { airports, loading, fetchAirports, searchHistory, clearHistory } =
     useAirportStore();
+  const { theme } = useThemeStore();
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -71,20 +73,30 @@ export default function Home() {
 
       {/* Fondo */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500"
         style={{
           backgroundImage: "url(/airport-bg.jpg)",
           backgroundPosition: "center",
           backgroundSize: "cover",
+          filter: theme === "light" ? "brightness(1.2) contrast(0.9)" : "brightness(0.6) contrast(1.1)",
         }}
       />
-      <div className="absolute inset-0" style={{ backgroundColor: "#000B1A", opacity: 0.7 }} />
+      <div 
+        className={`absolute inset-0 transition-all duration-500 ${
+          theme === "dark" 
+            ? "bg-[#000B1A] opacity-70" 
+            : "bg-gradient-to-br from-blue-50/80 via-cyan-50/60 to-white/70 opacity-60"
+        }`}
+      />
 
       <div className="relative z-10 w-full max-w-[1000px] flex flex-col items-center gap-8 md:gap-12">
 
         <h1
-          className="gradient-text font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight"
-          style={{ textShadow: "0 0 40px rgba(0, 249, 255, 0.3)" }}
+          className={`gradient-text font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight transition-all duration-500 ${
+            theme === "dark" 
+              ? "drop-shadow-[0_0_40px_rgba(0,249,255,0.3)]" 
+              : "drop-shadow-[0_0_30px_rgba(0,106,255,0.4)]"
+          }`}
         >
           SkyConnect Explorer
         </h1>
@@ -101,24 +113,21 @@ export default function Home() {
             onKeyPress={handleKeyPress}
             onFocus={() => setInputFocused(true)}
             onBlur={() => setTimeout(() => setInputFocused(false), 150)}
-            className="w-full h-[58px] px-6 rounded-full text-base md:text-lg outline-none transition-all duration-300"
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.95)",
-              border: "2px solid transparent",
-              color: "#1a1a1a",
-              boxShadow: "0 8px 32px rgba(0, 249, 255, 0.2)",
-            }}
+            className={`w-full h-[58px] px-6 rounded-full text-base md:text-lg outline-none transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-white/95 text-gray-900 placeholder:text-cyan-500/70 border-2 border-transparent shadow-[0_8px_32px_rgba(0,249,255,0.2)] focus:shadow-[0_8px_32px_rgba(0,249,255,0.4)] focus:border-cyan-300/50"
+                : "bg-white/98 text-gray-800 placeholder:text-blue-500/70 border-2 border-transparent shadow-[0_8px_32px_rgba(0,106,255,0.25)] focus:shadow-[0_8px_32px_rgba(0,106,255,0.4)] focus:border-blue-300/50"
+            }`}
           />
 
           {/* BOTÓN DE BUSCAR */}
           <button
             onClick={handleSearch}
-            className="group relative px-8 md:px-12 py-3 md:py-4 rounded-full font-bold text-base md:text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95"
-            style={{
-              background: "linear-gradient(90deg, #006AFF 0%, #00F9FF 100%)",
-              border: "2px solid white",
-              boxShadow: "0 8px 32px rgba(0, 106, 255, 0.4)",
-            }}
+            className={`group relative px-8 md:px-12 py-3 md:py-4 rounded-full font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 active:scale-95 ${
+              theme === "dark"
+                ? "bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 border-2 border-cyan-300/50 text-white shadow-[0_8px_32px_rgba(0,249,255,0.4)] hover:shadow-[0_12px_40px_rgba(0,249,255,0.6)] hover:border-cyan-200/70"
+                : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 border-2 border-blue-400/60 text-white shadow-[0_8px_32px_rgba(0,106,255,0.5)] hover:shadow-[0_12px_40px_rgba(0,106,255,0.7)] hover:border-blue-300/80"
+            }`}
           >
             <div className="flex items-center gap-3">
               <SearchIcon size={20} />
@@ -128,13 +137,23 @@ export default function Home() {
 
           {/* HISTORIAL */}
           {inputFocused && searchHistory.length > 0 && (
-            <div className="w-full bg-white/10 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-4 shadow-md border border-white/10 dark:border-gray-700/50 animate-fadeIn">
+            <div className={`w-full backdrop-blur-md rounded-xl p-4 shadow-md border animate-fadeIn transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-white/10 border-white/10"
+                : "bg-white/90 border-blue-200/30 shadow-lg"
+            }`}>
 
               <div className="flex justify-between items-center mb-2">
-                <h3 className="text-cyan-300 dark:text-cyan-400 font-semibold">Búsquedas recientes</h3>
+                <h3 className={`font-semibold ${
+                  theme === "dark" ? "text-cyan-300" : "text-blue-600"
+                }`}>Búsquedas recientes</h3>
                 <button
                   onClick={clearHistory}
-                  className="text-red-300 dark:text-red-400 text-sm hover:text-red-400 dark:hover:text-red-500 transition"
+                  className={`text-sm transition ${
+                    theme === "dark" 
+                      ? "text-red-300 hover:text-red-400" 
+                      : "text-red-500 hover:text-red-600"
+                  }`}
                 >
                   Limpiar
                 </button>
@@ -155,7 +174,11 @@ export default function Home() {
                       fetchAirports({ search: item, page: 1 });
                       setShowResults(true);
                     }}
-                    className="cursor-pointer px-3 py-2 rounded-md bg-white/5 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 transition-all text-white dark:text-gray-200"
+                    className={`cursor-pointer px-3 py-2 rounded-md transition-all ${
+                      theme === "dark"
+                        ? "bg-white/5 hover:bg-white/20 text-white"
+                        : "bg-blue-50/80 hover:bg-blue-100/90 text-gray-800 border border-blue-100/50"
+                    }`}
                   >
                     {item}
                   </li>
