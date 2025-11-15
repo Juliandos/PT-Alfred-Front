@@ -23,7 +23,7 @@ export default function AirportSearch() {
       <input
         type="text"
         placeholder="Buscar aeropuertos..."
-        className="w-full max-w-lg px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-800"
+        className="w-full max-w-lg px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 shadow-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

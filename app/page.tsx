@@ -41,10 +41,10 @@ export default function Home() {
 
   if (showResults) {
     return (
-      <div className="min-h-screen p-6">
+      <div className="min-h-screen p-6 bg-white dark:bg-gray-900">
         <button
           onClick={() => setShowResults(false)}
-          className="mb-4 px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+          className="mb-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition-colors"
         >
           ⬅ Volver al inicio
         </button>
@@ -53,7 +53,7 @@ export default function Home() {
           <input
             type="text"
             placeholder="Buscar aeropuertos..."
-            className="w-full px-4 py-2 rounded-md border border-gray-300 shadow-sm text-gray-800"
+            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 shadow-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -128,13 +128,13 @@ export default function Home() {
 
           {/* HISTORIAL */}
           {inputFocused && searchHistory.length > 0 && (
-            <div className="w-full bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md border border-white/10 animate-fadeIn">
+            <div className="w-full bg-white/10 dark:bg-gray-800/80 backdrop-blur-md rounded-xl p-4 shadow-md border border-white/10 dark:border-gray-700/50 animate-fadeIn">
 
               <div className="flex justify-between items-center mb-2">
-                <h3 className="text-cyan-300 font-semibold">Búsquedas recientes</h3>
+                <h3 className="text-cyan-300 dark:text-cyan-400 font-semibold">Búsquedas recientes</h3>
                 <button
                   onClick={clearHistory}
-                  className="text-red-300 text-sm hover:text-red-400 transition"
+                  className="text-red-300 dark:text-red-400 text-sm hover:text-red-400 dark:hover:text-red-500 transition"
                 >
                   Limpiar
                 </button>
@@ -155,7 +155,7 @@ export default function Home() {
                       fetchAirports({ search: item, page: 1 });
                       setShowResults(true);
                     }}
-                    className="cursor-pointer px-3 py-2 rounded-md bg-white/5 hover:bg-white/20 transition-all text-white"
+                    className="cursor-pointer px-3 py-2 rounded-md bg-white/5 dark:bg-white/10 hover:bg-white/20 dark:hover:bg-white/20 transition-all text-white dark:text-gray-200"
                   >
                     {item}
                   </li>

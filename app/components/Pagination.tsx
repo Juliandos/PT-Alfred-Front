@@ -16,16 +16,16 @@ export default function Pagination() {
   return (
     <div className="flex justify-center items-center gap-4 mt-4">
       <button
-        className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+        className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition-colors"
         onClick={() => handlePage(page - 1)}
       >
         Anterior
       </button>
 
-      <span className="font-semibold">{page}</span>
+      <span className="font-semibold text-gray-900 dark:text-gray-100">{page}</span>
 
       <button
-        className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+        className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 transition-colors"
         onClick={() => handlePage(page + 1)}
       >
         Siguiente
