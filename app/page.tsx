@@ -1,29 +1,32 @@
 "use client";
 
 import { useState } from "react";
-// Componente de ícono de lupa personalizado
+import AirportTable from "./components/AirportTable";
+import { useAirportStore } from "./stores/airport.store";
+
 const SearchIcon = ({ size = 20 }: { size?: number }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
     strokeLinejoin="round"
   >
     <circle cx="11" cy="11" r="8" />
     <path d="m21 21-4.35-4.35" />
   </svg>
 );
-import AirportTable from "./components/AirportTable";
-import { useAirportStore } from "./stores/airport.store";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
-  const { airports, loading, fetchAirports } = useAirportStore();
+  const [inputFocused, setInputFocused] = useState(false);
+
+  const { airports, loading, fetchAirports, searchHistory, clearHistory } =
+    useAirportStore();
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -33,12 +36,9 @@ export default function Home() {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
+    if (e.key === "Enter") handleSearch();
   };
 
-  // Si estamos mostrando resultados, usar el layout anterior
   if (showResults) {
     return (
       <div className="min-h-screen p-6">
@@ -46,9 +46,9 @@ export default function Home() {
           onClick={() => setShowResults(false)}
           className="mb-4 px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
         >
-          ← Volver al inicio
+          ⬅ Volver al inicio
         </button>
-        
+
         <div className="w-full max-w-lg mx-auto mb-6">
           <input
             type="text"
@@ -59,125 +59,120 @@ export default function Home() {
             onKeyPress={handleKeyPress}
           />
         </div>
-        
+
         <AirportTable data={airports} loading={loading} />
       </div>
     );
   }
 
-  // Landing page
+  // ===================== LANDING =====================
   return (
     <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-4">
-      {/* Imagen de fondo con overlay */}
-      <div 
+
+      {/* Fondo */}
+      <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: 'url(/airport-bg.jpg)',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover'
+          backgroundImage: "url(/airport-bg.jpg)",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
         }}
       />
-      
-      {/* Overlay azul con opacidad */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundColor: '#000B1A',
-          opacity: 0.7
-        }}
-      />
+      <div className="absolute inset-0" style={{ backgroundColor: "#000B1A", opacity: 0.7 }} />
 
-      {/* Contenido principal */}
       <div className="relative z-10 w-full max-w-[1000px] flex flex-col items-center gap-8 md:gap-12">
-        
-        {/* Título con gradiente */}
-        <h1 
+
+        <h1
           className="gradient-text font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight"
-          style={{
-            textShadow: '0 0 40px rgba(0, 249, 255, 0.3)'
-          }}
+          style={{ textShadow: "0 0 40px rgba(0, 249, 255, 0.3)" }}
         >
           SkyConnect Explorer
         </h1>
 
-        {/* Input de búsqueda */}
-        <div className="w-full max-w-[780px] px-4">
+        {/* INPUT + BOTÓN + HISTORIAL */}
+        <div className="w-full max-w-[780px] px-4 relative flex flex-col items-center gap-4">
+
+          {/* INPUT */}
           <input
             type="text"
             placeholder="Buscar aeropuertos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={handleKeyPress}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => setTimeout(() => setInputFocused(false), 150)}
             className="w-full h-[58px] px-6 rounded-full text-base md:text-lg outline-none transition-all duration-300"
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              border: '2px solid transparent',
-              color: '#1a1a1a',
-              boxShadow: '0 8px 32px rgba(0, 249, 255, 0.2)'
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.border = '2px solid #00F9FF';
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 249, 255, 0.4)';
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.border = '2px solid transparent';
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 249, 255, 0.2)';
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              border: "2px solid transparent",
+              color: "#1a1a1a",
+              boxShadow: "0 8px 32px rgba(0, 249, 255, 0.2)",
             }}
           />
+
+          {/* BOTÓN DE BUSCAR */}
+          <button
+            onClick={handleSearch}
+            className="group relative px-8 md:px-12 py-3 md:py-4 rounded-full font-bold text-base md:text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95"
+            style={{
+              background: "linear-gradient(90deg, #006AFF 0%, #00F9FF 100%)",
+              border: "2px solid white",
+              boxShadow: "0 8px 32px rgba(0, 106, 255, 0.4)",
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <SearchIcon size={20} />
+              <span>Buscar</span>
+            </div>
+          </button>
+
+          {/* HISTORIAL */}
+          {inputFocused && searchHistory.length > 0 && (
+            <div className="w-full bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md border border-white/10 animate-fadeIn">
+
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-cyan-300 font-semibold">Búsquedas recientes</h3>
+                <button
+                  onClick={clearHistory}
+                  className="text-red-300 text-sm hover:text-red-400 transition"
+                >
+                  Limpiar
+                </button>
+              </div>
+
+              <ul
+                className="space-y-2 overflow-y-auto"
+                style={{
+                  maxHeight: "200px", // Scroll si hay más de 5
+                  paddingRight: "4px",
+                }}
+              >
+                {searchHistory.map((item, index) => (
+                  <li
+                    key={index}
+                    onMouseDown={() => {
+                      setSearchQuery(item);
+                      fetchAirports({ search: item, page: 1 });
+                      setShowResults(true);
+                    }}
+                    className="cursor-pointer px-3 py-2 rounded-md bg-white/5 hover:bg-white/20 transition-all text-white"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-
-        {/* Botón de búsqueda */}
-        <button
-          onClick={handleSearch}
-          className="group relative px-8 md:px-12 py-3 md:py-4 rounded-full font-bold text-base md:text-lg text-white transition-all duration-300 hover:scale-105 active:scale-95"
-          style={{
-            background: 'linear-gradient(90deg, #006AFF 0%, #00F9FF 100%)',
-            border: '2px solid white',
-            boxShadow: '0 8px 32px rgba(0, 106, 255, 0.4)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 12px 40px rgba(0, 249, 255, 0.6)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 106, 255, 0.4)';
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <SearchIcon size={20} />
-            <span>Buscar</span>
-          </div>
-        </button>
-
-      </div>
-
-      {/* Efecto de brillo animado */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div 
-          className="absolute top-0 left-0 w-full h-full opacity-30"
-          style={{
-            background: 'radial-gradient(circle at 50% 50%, rgba(0, 249, 255, 0.2) 0%, transparent 70%)',
-            animation: 'pulse 4s ease-in-out infinite'
-          }}
-        />
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
-        
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.2;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.4;
-            transform: scale(1.05);
-          }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        
-        input::placeholder {
-          color: #00F9FF;
-          opacity: 0.7;
+        .animate-fadeIn {
+          animation: fadeIn 0.25s ease forwards;
         }
       `}</style>
     </div>
