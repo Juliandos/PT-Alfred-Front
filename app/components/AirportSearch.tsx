@@ -13,6 +13,8 @@ export default function AirportSearch() {
       fetchAirports({ search: query, page: 1 });
     }, 500);
 
+    console.log('query', query)
+
     return () => clearTimeout(timeout);
   }, [query, fetchAirports]);
 

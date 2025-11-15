@@ -35,7 +35,8 @@ export const useAirportStore = create<AirportStore>((set) => ({
     set({ loading: true });
     try {
       const data = await getAirportById(id);
-      set({ selectedAirport: data.data?.[0] ?? null });
+      console.log('resultado fetchAirportDetails:', data);
+      set({ selectedAirport: data });
     } finally {
       set({ loading: false });
     }

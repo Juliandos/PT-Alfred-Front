@@ -1,6 +1,9 @@
+"use client";
+
 import AirportSearch from "./components/AirportSearch";
 import AirportTable from "./components/AirportTable";
 import { useAirportStore } from "./stores/airport.store";
+
 
 export default function Home() {
   const { airports, loading } = useAirportStore();
