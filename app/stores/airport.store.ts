@@ -3,24 +3,28 @@ import { listAirports, getAirportById } from "../services/aviationstack.service"
 
 interface AirportStore {
   airports: any[];
+  allAirports: any[]; // Cache de todos los aeropuertos
   loading: boolean;
   selectedAirport: any | null;
-
   searchHistory: string[];
+  currentSearch: string;
+  currentPage: number;
 
   fetchAirports: (params: { search?: string; page: number }) => Promise<void>;
   fetchAirportDetails: (id: string) => Promise<void>;
-
   addToHistory: (query: string) => void;
   clearHistory: () => void;
 }
 
 export const useAirportStore = create<AirportStore>((set, get) => ({
   airports: [],
+  allAirports: [],
   loading: false,
   selectedAirport: null,
+  currentSearch: "",
+  currentPage: 1,
 
-  // 🔥 Nuevo: historial de búsqueda (cargado desde localStorage si existe)
+  // Historial de búsqueda (cargado desde localStorage si existe)
   searchHistory:
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("searchHistory") || "[]")
@@ -30,13 +34,13 @@ export const useAirportStore = create<AirportStore>((set, get) => ({
   //  Buscar aeropuertos
   // =============================================
   fetchAirports: async ({ search, page }) => {
-    set({ loading: true });
+    set({ loading: true, currentPage: page, currentSearch: search || "" });
 
     try {
       const response = await listAirports({
         search,
-        limit: 10,
-        offset: (page - 1) * 10,
+        limit: 9, // 9 aeropuertos por página (3x3 grid)
+        offset: (page - 1) * 9,
       });
 
       const airportsData = response.data || [];
@@ -73,7 +77,7 @@ export const useAirportStore = create<AirportStore>((set, get) => ({
   },
 
   // =============================================
-  // 🔥 Nuevo: agregar búsqueda al historial
+  //  Agregar búsqueda al historial
   // =============================================
   addToHistory: (query: string) => {
     const { searchHistory } = get();
@@ -93,7 +97,7 @@ export const useAirportStore = create<AirportStore>((set, get) => ({
   },
 
   // =============================================
-  // 🔥 Nuevo: limpiar historial
+  //  Limpiar historial
   // =============================================
   clearHistory: () => {
     localStorage.removeItem("searchHistory");
