@@ -34,6 +34,10 @@ export default function Home() {
     if (searchQuery.trim()) {
       fetchAirports({ search: searchQuery, page: 1 });
       setShowResults(true);
+    } else {
+      // Si no hay búsqueda, mostrar todos los aeropuertos
+      fetchAirports({ page: 1 });
+      setShowResults(true);
     }
   };
 
@@ -246,7 +250,7 @@ export default function Home() {
               <ul
                 className="space-y-2 overflow-y-auto"
                 style={{
-                  maxHeight: "200px", // Scroll si hay más de 5
+                  maxHeight: "200px",
                   paddingRight: "4px",
                 }}
               >
