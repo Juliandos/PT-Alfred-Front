@@ -2,6 +2,11 @@ import { apiClient } from "./apiClient";
 
 const API_KEY = "7933e6bf8c8f0c1a231b883081c820e7";
 
+/**
+ * 🛫 Obtener lista de aeropuertos desde la API real
+ * @param params - Parámetros de búsqueda y paginación
+ * @returns Lista de aeropuertos con paginación
+ */
 export const listAirports = async (params: {
   search?: string;
   limit?: number;
@@ -9,9 +14,12 @@ export const listAirports = async (params: {
 }) => {
   const { search, limit = 10, offset = 0 } = params;
 
-  // OPCIÓN 1: Si quieres usar la API real, descomenta esto:
-  /*
+  // ========================================
+  // 📡 API REAL (HABILITADA)
+  // ========================================
   try {
+    console.log('📡 Llamando a la API con:', { search, limit, offset });
+
     const response = await apiClient.get(`/airports`, {
       params: {
         access_key: API_KEY,
@@ -20,15 +28,39 @@ export const listAirports = async (params: {
         search,
       },
     });
-    return response.data;
-  } catch (error) {
-    console.error('Error en API:', error);
-    // En caso de error, devolver estructura vacía
-    return { data: [], pagination: { offset: 0, limit: 10, count: 0, total: 0 } };
-  }
-  */
 
-  // OPCIÓN 2: Datos mock (actual)
+    console.log('✅ Respuesta de la API:', response.data);
+
+    return {
+      pagination: response.data.pagination || {
+        offset,
+        limit,
+        count: response.data.data?.length || 0,
+        total: response.data.pagination?.total || 0,
+      },
+      data: response.data.data || [],
+    };
+  } catch (error: any) {
+    console.error('❌ Error en API:', error);
+    console.error('Detalles:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
+    
+    // En caso de error, devolver estructura vacía
+    return {
+      pagination: { offset: 0, limit: 10, count: 0, total: 0 },
+      data: [],
+    };
+  }
+
+  // ========================================
+  // 🎭 DATOS MOCK (COMENTADOS)
+  // ========================================
+  // Para volver a usar mock, comenta el bloque de arriba
+  // y descomenta este bloque:
+  /*
   const mockData = [
     {
       id: "5524551",
@@ -214,29 +246,56 @@ export const listAirports = async (params: {
       count: paginatedData.length,
       total: filteredData.length,
     },
-    data: paginatedData, // Esto es lo importante: debe ser un array
+    data: paginatedData,
   };
+  */
 };
 
-// Obtener detalles de un aeropuerto por su IATA code
+/**
+ * 🔍 Obtener detalles de un aeropuerto específico por su código IATA
+ * @param id - Código IATA del aeropuerto (ej: "JFK", "MAD")
+ * @returns Datos del aeropuerto o null si no se encuentra
+ */
 export const getAirportById = async (id: string) => {
-  // OPCIÓN 1: API real (descomenta para usar)
-  /*
+  // ========================================
+  // 📡 API REAL (HABILITADA)
+  // ========================================
   try {
+    console.log('📡 Buscando aeropuerto con código:', id);
+
     const response = await apiClient.get(`/airports`, {
       params: {
         access_key: API_KEY,
         iata_code: id,
       },
     });
-    return response.data.data[0];
-  } catch (error) {
-    console.error('Error en API:', error);
+
+    console.log('✅ Respuesta getAirportById:', response.data);
+
+    // La API retorna un array, tomamos el primer elemento
+    if (response.data.data && response.data.data.length > 0) {
+      return response.data.data[0];
+    }
+
+    console.warn('⚠️ No se encontró aeropuerto con código:', id);
+    return null;
+  } catch (error: any) {
+    console.error('❌ Error en getAirportById:', error);
+    console.error('Detalles:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+    });
     return null;
   }
-  */
 
-  // OPCIÓN 2: Mock (actual)
+  // ========================================
+  // 🎭 DATOS MOCK (COMENTADOS)
+  // ========================================
+  // Para volver a usar mock, comenta el bloque de arriba
+  // y descomenta este bloque:
+  /*
   const mockData = await listAirports({ limit: 100, offset: 0 });
   return mockData.data.find((airport) => airport.iata_code === id);
+  */
 };

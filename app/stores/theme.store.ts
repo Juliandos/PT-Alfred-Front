@@ -3,10 +3,12 @@ import { create } from "zustand";
 type Theme = "light" | "dark";
 
 interface ThemeStore {
+  // ESTADO
   theme: Theme;
+  initialized: boolean;
+  // ACCIONES
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
-  initialized: boolean;
   initTheme: () => void;
 }
 
@@ -17,10 +19,13 @@ const getInitialTheme = (): Theme => {
   return saved || "dark";
 };
 
+// Crear el store
 export const useThemeStore = create<ThemeStore>((set, get) => ({
+
   theme: "dark", // Valor por defecto, se inicializará en el cliente
   initialized: false,
   
+  // Inicializar el tema desde localStorage o valor por defecto
   initTheme: () => {
     if (typeof window === "undefined" || get().initialized) return;
     
@@ -31,6 +36,7 @@ export const useThemeStore = create<ThemeStore>((set, get) => ({
     set({ theme, initialized: true });
   },
   
+  // Cambiar el tema
   toggleTheme: () => {
     set((state) => {
       const newTheme = state.theme === "light" ? "dark" : "light";
@@ -42,6 +48,7 @@ export const useThemeStore = create<ThemeStore>((set, get) => ({
     });
   },
   
+  // Establecer un tema específico
   setTheme: (theme: Theme) => {
     set({ theme });
     if (typeof window !== "undefined") {
