@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 
+// ===============================================
 // Mock next/navigation
+// ===============================================
 jest.mock('next/navigation', () => ({
   useRouter() {
     return {
@@ -8,6 +10,10 @@ jest.mock('next/navigation', () => ({
       replace: jest.fn(),
       prefetch: jest.fn(),
       back: jest.fn(),
+      forward: jest.fn(),
+      refresh: jest.fn(),
+      pathname: '/',
+      query: {},
     };
   },
   useParams() {
@@ -18,36 +24,73 @@ jest.mock('next/navigation', () => ({
   usePathname() {
     return '/';
   },
+  useSearchParams() {
+    return new URLSearchParams();
+  },
 }));
 
+// ===============================================
 // Mock Leaflet
+// ===============================================
 jest.mock('leaflet', () => ({
   Icon: jest.fn(() => ({})),
-  Map: jest.fn(() => ({})),
+  Map: jest.fn(() => ({
+    setView: jest.fn(),
+    remove: jest.fn(),
+  })),
   TileLayer: jest.fn(() => ({})),
-  Marker: jest.fn(() => ({})),
+  Marker: jest.fn(() => ({
+    addTo: jest.fn(),
+  })),
+  icon: jest.fn(() => ({})),
 }));
 
+// ===============================================
 // Mock react-leaflet
+// ===============================================
 jest.mock('react-leaflet', () => ({
-  MapContainer: ({ children }: any) => <div data-testid="map-container">{children}</div>,
+  MapContainer: ({ children }: any) => (
+    <div data-testid="map-container">{children}</div>
+  ),
   TileLayer: () => <div data-testid="tile-layer" />,
   Marker: () => <div data-testid="marker" />,
+  Popup: ({ children }: any) => <div data-testid="popup">{children}</div>,
+  useMap: () => ({
+    setView: jest.fn(),
+    flyTo: jest.fn(),
+  }),
 }));
 
+// ===============================================
 // Mock localStorage
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-};
-global.localStorage = localStorageMock as any;
+// ===============================================
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
 
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+})();
+
+Object.defineProperty(global, 'localStorage', {
+  value: localStorageMock,
+});
+
+// ===============================================
 // Mock window.matchMedia
+// ===============================================
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -57,4 +100,46 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
+});
+
+// ===============================================
+// Mock IntersectionObserver
+// ===============================================
+class IntersectionObserverMock {
+  observe = jest.fn();
+  disconnect = jest.fn();
+  unobserve = jest.fn();
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserverMock,
+});
+
+Object.defineProperty(global, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserverMock,
+});
+
+// ===============================================
+// Console error suppression (opcional)
+// ===============================================
+const originalError = console.error;
+beforeAll(() => {
+  console.error = (...args: any[]) => {
+    if (
+      typeof args[0] === 'string' &&
+      (args[0].includes('Warning: ReactDOM.render') ||
+        args[0].includes('Not implemented: HTMLFormElement.prototype.submit'))
+    ) {
+      return;
+    }
+    originalError.call(console, ...args);
+  };
+});
+
+afterAll(() => {
+  console.error = originalError;
 });
