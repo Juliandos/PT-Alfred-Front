@@ -46,20 +46,25 @@ jest.mock('leaflet', () => ({
 }));
 
 // ===============================================
-// Mock react-leaflet
+// Mock react-leaflet (SIN JSX)
 // ===============================================
-jest.mock('react-leaflet', () => ({
-  MapContainer: ({ children }: any) => (
-    <div data-testid="map-container">{children}</div>
-  ),
-  TileLayer: () => <div data-testid="tile-layer" />,
-  Marker: () => <div data-testid="marker" />,
-  Popup: ({ children }: any) => <div data-testid="popup">{children}</div>,
-  useMap: () => ({
-    setView: jest.fn(),
-    flyTo: jest.fn(),
-  }),
-}));
+jest.mock('react-leaflet', () => {
+  const React = require('react');
+  return {
+    MapContainer: ({ children, ...props }: any) => 
+      React.createElement('div', { 'data-testid': 'map-container', ...props }, children),
+    TileLayer: (props: any) => 
+      React.createElement('div', { 'data-testid': 'tile-layer', ...props }),
+    Marker: (props: any) => 
+      React.createElement('div', { 'data-testid': 'marker', ...props }),
+    Popup: ({ children, ...props }: any) => 
+      React.createElement('div', { 'data-testid': 'popup', ...props }, children),
+    useMap: () => ({
+      setView: jest.fn(),
+      flyTo: jest.fn(),
+    }),
+  };
+});
 
 // ===============================================
 // Mock localStorage
