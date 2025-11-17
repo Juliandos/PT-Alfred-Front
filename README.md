@@ -6,9 +6,9 @@ Explorador de aeropuertos con información detallada y búsqueda en tiempo real,
 Vista previa (malla 4 columnas)
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
   <img src="./public/screenshots/Landing.png" />
-  <img src="./public/screenshots/LandingLight.png" />
-  <img src="./public/screenshots/SearchResults.png" />
-  <img src="./public/screenshots/AirportDetail.png" />
+  <img src="./public/screenshots/Landing Light.png" />
+  <img src="./public/screenshots/AirportSearch.png" />
+  <img src="./public/screenshots/Airport Search Light.png" />
 </div>
 
 
@@ -81,24 +81,13 @@ npm run build
 npm start
 
 📂 Estructura del Proyecto
+```
 skyconnect-explorer/
 ├── app/
-│   ├── airport/[id]/          # Página de detalles de aeropuerto
+│   ├── airport/[id]/
 │   ├── components/
-│   │   ├── AirportCard.tsx
-│   │   ├── AirportMap.tsx
-│   │   ├── AirportSearch.tsx
-│   │   ├── AirportTable.tsx
-│   │   ├── Pagination.tsx
-│   │   ├── ThemeProvider.tsx
-│   │   └── ThemeToggle.tsx
 │   ├── services/
-│   │   ├── apiClient.ts
-│   │   ├── aviationstack.service.ts
-│   │   └── types.ts
 │   ├── stores/
-│   │   ├── airport.store.ts
-│   │   └── theme.store.ts
 │   ├── __tests__/
 │   ├── globals.css
 │   ├── layout.tsx
@@ -114,6 +103,8 @@ skyconnect-explorer/
 ├── tailwind.config.ts
 ├── tsconfig.json
 └── package.json
+```
+
 
 🧪 Testing
 npm test            # correr tests
