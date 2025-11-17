@@ -5,46 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useAirportStore } from "../../stores/airport.store";
 import { useThemeStore } from "../../stores/theme.store";
 import AirportMap from "../../components/AirportMap";
+import Image from "next/image";
 
 type Tab = "general" | "ubicacion" | "zona-horaria" | "estadisticas";
-
-const InfoIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <line x1="12" y1="16" x2="12" y2="12" />
-    <line x1="12" y1="8" x2="12.01" y2="8" />
-  </svg>
-);
-
-const LocationIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-    <circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
-const GlobeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <line x1="2" y1="12" x2="22" y2="12" />
-    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-  </svg>
-);
-
-const ClockIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
-  </svg>
-);
-
-const StatsIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10" />
-    <line x1="12" y1="20" x2="12" y2="4" />
-    <line x1="6" y1="20" x2="6" y2="14" />
-  </svg>
-);
 
 export default function AirportDetails() {
   const params = useParams();
@@ -114,18 +77,18 @@ export default function AirportDetails() {
     );
   }
 
-  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
-    { id: "general", label: "General", icon: <InfoIcon /> },
-    { id: "ubicacion", label: "Ubicación", icon: <LocationIcon /> },
-    { id: "zona-horaria", label: "Zona Horaria", icon: <GlobeIcon /> },
-    { id: "estadisticas", label: "Estadísticas", icon: <StatsIcon /> },
+  const tabs: { id: Tab; label: string }[] = [
+    { id: "general", label: "General" },
+    { id: "ubicacion", label: "Ubicación" },
+    { id: "zona-horaria", label: "Zona Horaria" },
+    { id: "estadisticas", label: "Estadísticas" },
   ];
 
   return (
     <div className={`relative min-h-screen w-full overflow-hidden ${
-      theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+      theme === "dark" ? "bg-[#0A1628]" : "bg-gray-50"
     }`}>
-      {/* Fondo */}
+      {/* Fondo más oscuro */}
       <div
         className="absolute inset-0 bg-cover bg-center transition-all duration-500"
         style={{
@@ -134,21 +97,21 @@ export default function AirportDetails() {
             : "url(/airport-bg.jpg)",
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: theme === "light" ? "brightness(1.1) contrast(1.05) blur(2px)" : "brightness(0.4) contrast(1.1) blur(2px)",
+          filter: theme === "light" ? "brightness(0.7) contrast(1.15)" : "brightness(0.25) contrast(1.3)",
         }}
       />
       <div 
         className={`absolute inset-0 transition-all duration-500 ${
           theme === "dark" 
-            ? "bg-[#000B1A] opacity-80" 
-            : "bg-gradient-to-br from-blue-50/60 via-cyan-50/40 to-white/60 opacity-70"
+            ? "bg-[#0A1628] opacity-90" 
+            : "bg-gradient-to-br from-blue-950/80 via-slate-950/70 to-black/80 opacity-75"
         }`}
       />
 
       {/* Contenido */}
       <div className="relative z-10 min-h-screen p-6 md:p-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
+        <div className="max-w-4xl mx-auto">
+          {/* Header con título */}
           <div className="mb-8">
             <button
               onClick={() => router.push("/")}
@@ -162,24 +125,24 @@ export default function AirportDetails() {
             </button>
 
             <h1
-              className={`font-montserrat-black text-4xl md:text-5xl lg:text-6xl mb-6 text-center ${
+              className={`font-montserrat-black text-4xl md:text-5xl mb-8 text-center ${
                 theme === "dark" ? "gradient-text" : ""
               }`}
               style={
                 theme === "light"
                   ? {
-                      background: "linear-gradient(90deg, #1e40af 0%, #1e3a8a 20%, #1e3a8a 40%, #1e40af 60%, #2563eb 80%, #3b82f6 100%)",
+                      background: "linear-gradient(90deg, #60a5fa 0%, #3b82f6 20%, #2563eb 40%, #1d4ed8 60%, #1e40af 80%, #1e3a8a 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
-                      filter: "contrast(1.2) brightness(0.95)",
+                      filter: "contrast(1.2) brightness(1.2)",
                     }
                   : {
                       textShadow: "0 0 40px rgba(0, 249, 255, 0.3)",
                     }
               }
             >
-              {selectedAirport.airport_name}
+              {selectedAirport.iata_code || selectedAirport.airport_name}
             </h1>
 
             {/* Tabs */}
@@ -188,18 +151,15 @@ export default function AirportDetails() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
+                  className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 ${
                     activeTab === tab.id
-                      ? theme === "dark"
-                        ? "bg-blue-500 text-white shadow-lg shadow-blue-500/50"
-                        : "bg-blue-600 text-white shadow-lg shadow-blue-600/50"
+                      ? "bg-blue-600 text-white"
                       : theme === "dark"
                       ? "bg-gray-800/50 text-gray-300 hover:bg-gray-800/70"
-                      : "bg-white/80 text-gray-700 hover:bg-white"
+                      : "bg-gray-200/80 text-gray-700 hover:bg-gray-300/80"
                   }`}
                 >
-                  {tab.icon}
-                  <span>{tab.label}</span>
+                  {tab.label}
                 </button>
               ))}
             </div>
@@ -212,14 +172,15 @@ export default function AirportDetails() {
               <InfoCard
                 theme={theme}
                 title="Información General"
-                icon={<InfoIcon />}
+                iconPath="/Info Circle.png"
+                airplaneImage="/avionCard.jpg"
                 content={
-                  <div className="space-y-3">
-                    <InfoRow label="Código IATA" value={selectedAirport.iata_code || "N/A"} />
-                    <InfoRow label="Código ICAO" value={selectedAirport.icao_code || "N/A"} />
-                    <InfoRow label="País" value={`${selectedAirport.country_name || "N/A"} (${selectedAirport.country_iso2 || "N/A"})`} />
-                    <InfoRow label="Ciudad IATA" value={selectedAirport.city_iata_code || selectedAirport.city_iata || "N/A"} />
-                    <InfoRow label="Teléfono" value={selectedAirport.phone_number || "No disponible"} />
+                  <div className="space-y-2">
+                    <InfoRow label="Código IATA" value={selectedAirport.iata_code || "N/A"} theme={theme} />
+                    <InfoRow label="Código ICAO" value={selectedAirport.icao_code || "N/A"} theme={theme} />
+                    <InfoRow label="País" value={`${selectedAirport.country_name || "N/A"} (${selectedAirport.country_iso2 || "N/A"})`} theme={theme} />
+                    <InfoRow label="Ciudad IATA" value={selectedAirport.city_iata_code || selectedAirport.city_iata || "N/A"} theme={theme} />
+                    <InfoRow label="Teléfono" value={selectedAirport.phone_number || "No disponible"} theme={theme} />
                   </div>
                 }
               />
@@ -227,28 +188,29 @@ export default function AirportDetails() {
 
             {/* Tab: Ubicación */}
             {activeTab === "ubicacion" && (
-              <InfoCard
-                theme={theme}
-                title="Ubicación"
-                icon={<LocationIcon />}
-                content={
-                  <div>
-                    <div className="space-y-3 mb-6">
-                      <InfoRow label="Latitud" value={selectedAirport.latitude || "N/A"} />
-                      <InfoRow label="Longitud" value={selectedAirport.longitude || "N/A"} />
+              <div className="space-y-6">
+                <InfoCard
+                  theme={theme}
+                  title="Ubicación"
+                  iconPath="/Map Point.png"
+                  airplaneImage="/avionCard.jpg"
+                  content={
+                    <div className="space-y-2">
+                      <InfoRow label="Latitud" value={selectedAirport.latitude || "N/A"} theme={theme} />
+                      <InfoRow label="Longitud" value={selectedAirport.longitude || "N/A"} theme={theme} />
                       {selectedAirport.geoname_id && (
-                        <InfoRow label="ID Geoname" value={selectedAirport.geoname_id} />
+                        <InfoRow label="ID Geoname" value={selectedAirport.geoname_id} theme={theme} />
                       )}
                     </div>
-                    {selectedAirport.latitude && selectedAirport.longitude && (
-                      <AirportMap
-                        lat={parseFloat(selectedAirport.latitude)}
-                        lng={parseFloat(selectedAirport.longitude)}
-                      />
-                    )}
-                  </div>
-                }
-              />
+                  }
+                />
+                {selectedAirport.latitude && selectedAirport.longitude && (
+                  <AirportMap
+                    lat={parseFloat(selectedAirport.latitude)}
+                    lng={parseFloat(selectedAirport.longitude)}
+                  />
+                )}
+              </div>
             )}
 
             {/* Tab: Zona Horaria */}
@@ -257,21 +219,23 @@ export default function AirportDetails() {
                 <InfoCard
                   theme={theme}
                   title="Zona Horaria"
-                  icon={<GlobeIcon />}
+                  iconPath="/Global.png"
+                  airplaneImage="/avionCard.jpg"
                   content={
-                    <div className="space-y-3">
-                      <InfoRow label="Zona Horaria" value={selectedAirport.timezone || "N/A"} />
-                      <InfoRow label="GMT" value={selectedAirport.gmt ? `${selectedAirport.gmt >= 0 ? "+" : ""}${selectedAirport.gmt}` : "N/A"} />
+                    <div className="space-y-2">
+                      <InfoRow label="Zona Horaria" value={selectedAirport.timezone || "N/A"} theme={theme} />
+                      <InfoRow label="GMT" value={selectedAirport.gmt ? `${selectedAirport.gmt >= 0 ? "+" : ""}${selectedAirport.gmt}` : "N/A"} theme={theme} />
                     </div>
                   }
                 />
                 <InfoCard
                   theme={theme}
                   title="Hora Local"
-                  icon={<ClockIcon />}
+                  iconPath="/Global.png"
+                  airplaneImage="/avionCard.jpg"
                   content={
                     <div>
-                      <p className={`text-lg ${
+                      <p className={`text-lg font-semibold ${
                         theme === "dark" ? "text-white" : "text-gray-900"
                       }`}>
                         {getLocalTime()}
@@ -287,14 +251,15 @@ export default function AirportDetails() {
               <InfoCard
                 theme={theme}
                 title="Estadísticas"
-                icon={<StatsIcon />}
+                iconPath="/Info Circle.png"
+                airplaneImage="/avionCard.jpg"
                 content={
-                  <div className="space-y-3">
-                    <InfoRow label="ID Aeropuerto" value={selectedAirport.airport_id || "N/A"} />
-                    <InfoRow label="Código IATA" value={selectedAirport.iata_code || "N/A"} />
-                    <InfoRow label="Código ICAO" value={selectedAirport.icao_code || "N/A"} />
-                    <InfoRow label="País" value={selectedAirport.country_name || "N/A"} />
-                    <InfoRow label="Ciudad" value={selectedAirport.city_iata_code || selectedAirport.city_iata || "N/A"} />
+                  <div className="space-y-2">
+                    <InfoRow label="ID Aeropuerto" value={selectedAirport.airport_id || "N/A"} theme={theme} />
+                    <InfoRow label="Código IATA" value={selectedAirport.iata_code || "N/A"} theme={theme} />
+                    <InfoRow label="Código ICAO" value={selectedAirport.icao_code || "N/A"} theme={theme} />
+                    <InfoRow label="País" value={selectedAirport.country_name || "N/A"} theme={theme} />
+                    <InfoRow label="Ciudad" value={selectedAirport.city_iata_code || selectedAirport.city_iata || "N/A"} theme={theme} />
                   </div>
                 }
               />
@@ -310,78 +275,81 @@ export default function AirportDetails() {
 function InfoCard({
   theme,
   title,
-  icon,
+  iconPath,
+  airplaneImage,
   content,
 }: {
   theme: "light" | "dark";
   title: string;
-  icon: React.ReactNode;
+  iconPath: string;
+  airplaneImage: string;
   content: React.ReactNode;
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-xl p-6 md:p-8 ${
-        theme === "dark"
-          ? "bg-gray-800/90 border border-gray-700/50"
-          : "bg-white/95 border border-blue-200/30"
-      } shadow-xl`}
+      className="relative overflow-hidden rounded-lg"
+      style={{
+        background: theme === "dark"
+          ? "rgba(30, 41, 59, 0.7)"
+          : "rgba(241, 245, 249, 0.9)",
+        backdropFilter: "blur(10px)",
+        minHeight: "120px",
+      }}
     >
-      {/* Silueta de avión de fondo */}
-      <div
-        className="absolute bottom-0 right-0 w-64 h-64 pointer-events-none"
+      {/* División vertical al 70% - lado izquierdo (contenido) */}
+      <div className="absolute inset-0 w-[70%]" style={{
+        background: theme === "dark"
+          ? "rgba(30, 41, 59, 0.5)"
+          : "rgba(241, 245, 249, 0.5)",
+      }} />
+
+      {/* División vertical al 70% - lado derecho (imagen) */}
+      <div 
+        className="absolute top-0 right-0 bottom-0 w-[30%]"
         style={{
-          opacity: theme === "dark" ? 0.1 : 0.06,
-          transform: "rotate(-15deg) translate(10%, 10%)",
+          backgroundImage: `url(${airplaneImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.3,
         }}
-      >
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke={theme === "dark" ? "#ffffff" : "#1e40af"}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
-        </svg>
-      </div>
+      />
 
-      {/* Título */}
-      <div className="flex items-center gap-3 mb-6 relative z-10">
-        <div
-          className={`${
-            theme === "dark"
-              ? "text-cyan-400"
-              : "text-blue-600"
-          }`}
-        >
-          {icon}
+      {/* Contenido - lado izquierdo */}
+      <div className="relative z-10 p-5" style={{ width: "70%" }}>
+        {/* Título con icono */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 relative">
+            <Image
+              src={iconPath}
+              alt={title}
+              width={32}
+              height={32}
+              style={{
+                filter: theme === "dark" ? "brightness(0) invert(1)" : "brightness(0) invert(0.4)",
+              }}
+            />
+          </div>
+          <h2
+            className={`text-xl font-bold ${
+              theme === "dark" ? "text-cyan-400" : "text-blue-600"
+            }`}
+          >
+            {title}
+          </h2>
         </div>
-        <h2
-          className={`text-xl md:text-2xl font-bold ${
-            theme === "dark"
-              ? "bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent"
-              : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 bg-clip-text text-transparent"
-          }`}
-        >
-          {title}
-        </h2>
-      </div>
 
-      {/* Contenido */}
-      <div className="relative z-10">{content}</div>
+        {/* Contenido */}
+        <div>{content}</div>
+      </div>
     </div>
   );
 }
 
 // Componente para las filas de información
-function InfoRow({ label, value }: { label: string; value: string }) {
-  const { theme } = useThemeStore();
+function InfoRow({ label, value, theme }: { label: string; value: string; theme: "light" | "dark" }) {
   return (
-    <div>
-      <span className={`font-semibold ${
+    <div className="flex">
+      <span className={`font-semibold min-w-[120px] ${
         theme === "dark" ? "text-gray-300" : "text-gray-700"
       }`}>
         {label}:{" "}
