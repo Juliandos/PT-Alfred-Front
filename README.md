@@ -1,6 +1,6 @@
 🛫 SkyConnect Explorer
 Explorador de aeropuertos con información detallada y búsqueda en tiempo real, construido con Next.js 16, React 19, TypeScript y Tailwind CSS 4.
-![Landing Dark](./docs/screenshots/Landing.png)
+![Landing Dark](./public/screenshots/Landing.png)
 Mostrar imagen
 Mostrar imagen
 Mostrar imagen
