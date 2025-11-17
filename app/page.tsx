@@ -166,10 +166,10 @@ export default function Home() {
         }`}
       />
 
-      <div className="relative z-10 w-full max-w-[1000px] flex flex-col items-center gap-8 md:gap-12">
-
+      {/* Título arriba */}
+      <div className="absolute top-16 md:top-30 left-0 right-0 z-10">
         <h1
-          className={`font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-none tracking-tight transition-all duration-500 ${
+          className={`font-montserrat-black text-3xl sm:text-5xl md:text-7xl lg:text-[80px] text-center leading-tight tracking-tight transition-all duration-500 px-4 ${
             theme === "dark" ? "gradient-text" : ""
           }`}
           style={
@@ -180,101 +180,111 @@ export default function Home() {
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   filter: "contrast(1.2) brightness(0.95)",
+                  lineHeight: "1.2",
                 }
               : {
                   textShadow: "0 0 40px rgba(0, 249, 255, 0.3)",
+                  lineHeight: "1.2",
                 }
           }
         >
           SkyConnect Explorer
         </h1>
+      </div>
 
-        {/* INPUT + BOTÓN + HISTORIAL */}
-        <div className="w-full max-w-[780px] px-4 relative flex flex-col items-center gap-4">
+      {/* Input y botón centrados */}
+      <div className="relative z-10 w-full max-w-[780px] px-4 flex flex-col items-center gap-4">
 
-          {/* INPUT */}
-          <input
-            type="text"
-            placeholder="Buscar aeropuertos..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress}
-            onFocus={() => setInputFocused(true)}
-            onBlur={() => setTimeout(() => setInputFocused(false), 150)}
-            className={`w-full h-[58px] px-6 rounded-full text-base md:text-lg outline-none transition-all duration-300 ${
-              theme === "dark"
-                ? "bg-white/95 text-gray-900 placeholder:text-cyan-500/70 border-2 border-transparent shadow-[0_8px_32px_rgba(0,249,255,0.2)] focus:shadow-[0_8px_32px_rgba(0,249,255,0.4)] focus:border-cyan-300/50"
-                : "bg-white/98 text-gray-800 placeholder:text-blue-500/70 border-2 border-transparent shadow-[0_8px_32px_rgba(0,106,255,0.25)] focus:shadow-[0_8px_32px_rgba(0,106,255,0.4)] focus:border-blue-300/50"
-            }`}
-          />
+        {/* INPUT */}
+        <input
+          type="text"
+          placeholder="Buscar aeropuertos..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyPress={handleKeyPress}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => setTimeout(() => setInputFocused(false), 150)}
+          className={`w-full h-[58px] px-6 rounded-full text-base md:text-lg outline-none transition-all duration-300 ${
+            theme === "dark"
+              ? "bg-white/95 text-gray-900 placeholder:text-cyan-500/70 border-2 border-transparent shadow-[0_8px_32px_rgba(0,249,255,0.2)] focus:shadow-[0_8px_32px_rgba(0,249,255,0.4)] focus:border-cyan-300/50"
+              : "bg-white/98 text-gray-800 placeholder:text-blue-500/70 border-2 border-transparent shadow-[0_8px_32px_rgba(0,106,255,0.25)] focus:shadow-[0_8px_32px_rgba(0,106,255,0.4)] focus:border-blue-300/50"
+          }`}
+        />
 
-          {/* BOTÓN DE BUSCAR */}
-          <button
-            onClick={handleSearch}
-            className={`group relative px-8 md:px-12 py-3 md:py-4 rounded-full font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 active:scale-95 ${
-              theme === "dark"
-                ? "bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 border-2 border-cyan-300/50 text-white shadow-[0_8px_32px_rgba(0,249,255,0.4)] hover:shadow-[0_12px_40px_rgba(0,249,255,0.6)] hover:border-cyan-200/70"
-                : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 border-2 border-blue-400/60 text-white shadow-[0_8px_32px_rgba(0,106,255,0.5)] hover:shadow-[0_12px_40px_rgba(0,106,255,0.7)] hover:border-blue-300/80"
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <SearchIcon size={20} />
-              <span>Buscar</span>
+        {/* BOTÓN FUERA DEL INPUT */}
+        <button
+          onClick={handleSearch}
+          className="
+            backdrop-blur-md
+            bg-gradient-to-r from-[#0A63E8]/60 via-[#12C7E8]/60 to-[#11E6C4]/60
+            border border-white/60
+            rounded-2xl
+            px-9
+            h-[62px]
+            flex items-center gap-4
+            text-white
+            font-medium text-xl
+            transition-all duration-300
+            hover:scale-[1.03] active:scale-95
+          "
+        >
+          <div className="w-6 h-6 bg-white/40 rounded-full relative">
+            <div className="absolute bottom-0 right-0 w-[10px] h-[3px] bg-white/60 rotate-45 rounded" />
+          </div>
+          <span>Buscar</span>
+        </button>
+
+        {/* HISTORIAL */}
+        {inputFocused && searchHistory.length > 0 && (
+          <div className={`w-full backdrop-blur-md rounded-xl p-4 shadow-md border animate-fadeIn transition-all duration-300 ${
+            theme === "dark"
+              ? "bg-white/10 border-white/10"
+              : "bg-white/90 border-blue-200/30 shadow-lg"
+          }`}>
+
+            <div className="flex justify-between items-center mb-2">
+              <h3 className={`font-semibold ${
+                theme === "dark" ? "text-cyan-300" : "text-blue-600"
+              }`}>Búsquedas recientes</h3>
+              <button
+                onClick={clearHistory}
+                className={`text-sm transition ${
+                  theme === "dark" 
+                    ? "text-red-300 hover:text-red-400" 
+                    : "text-red-500 hover:text-red-600"
+                }`}
+              >
+                Limpiar
+              </button>
             </div>
-          </button>
 
-          {/* HISTORIAL */}
-          {inputFocused && searchHistory.length > 0 && (
-            <div className={`w-full backdrop-blur-md rounded-xl p-4 shadow-md border animate-fadeIn transition-all duration-300 ${
-              theme === "dark"
-                ? "bg-white/10 border-white/10"
-                : "bg-white/90 border-blue-200/30 shadow-lg"
-            }`}>
-
-              <div className="flex justify-between items-center mb-2">
-                <h3 className={`font-semibold ${
-                  theme === "dark" ? "text-cyan-300" : "text-blue-600"
-                }`}>Búsquedas recientes</h3>
-                <button
-                  onClick={clearHistory}
-                  className={`text-sm transition ${
-                    theme === "dark" 
-                      ? "text-red-300 hover:text-red-400" 
-                      : "text-red-500 hover:text-red-600"
+            <ul
+              className="space-y-2 overflow-y-auto"
+              style={{
+                maxHeight: "200px",
+                paddingRight: "4px",
+              }}
+            >
+              {searchHistory.map((item, index) => (
+                <li
+                  key={index}
+                  onMouseDown={() => {
+                    setSearchQuery(item);
+                    fetchAirports({ search: item, page: 1 });
+                    setShowResults(true);
+                  }}
+                  className={`cursor-pointer px-3 py-2 rounded-md transition-all ${
+                    theme === "dark"
+                      ? "bg-white/5 hover:bg-white/20 text-white"
+                      : "bg-blue-50/80 hover:bg-blue-100/90 text-gray-800 border border-blue-100/50"
                   }`}
                 >
-                  Limpiar
-                </button>
-              </div>
-
-              <ul
-                className="space-y-2 overflow-y-auto"
-                style={{
-                  maxHeight: "200px",
-                  paddingRight: "4px",
-                }}
-              >
-                {searchHistory.map((item, index) => (
-                  <li
-                    key={index}
-                    onMouseDown={() => {
-                      setSearchQuery(item);
-                      fetchAirports({ search: item, page: 1 });
-                      setShowResults(true);
-                    }}
-                    className={`cursor-pointer px-3 py-2 rounded-md transition-all ${
-                      theme === "dark"
-                        ? "bg-white/5 hover:bg-white/20 text-white"
-                        : "bg-blue-50/80 hover:bg-blue-100/90 text-gray-800 border border-blue-100/50"
-                    }`}
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <style>{`
