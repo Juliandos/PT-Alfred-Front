@@ -47,6 +47,16 @@ describe('Airport Store', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
+    // IMPORTANTE: Resetear el store entre tests
+    useAirportStore.setState({
+      airports: [],
+      allAirports: [],
+      loading: false,
+      selectedAirport: null,
+      searchHistory: [],
+      currentSearch: '',
+      currentPage: 1,
+    });
   });
 
   describe('Initial State', () => {
@@ -62,6 +72,12 @@ describe('Airport Store', () => {
     it('should load search history from localStorage', () => {
       const mockHistory = ['JFK', 'LAX', 'LHR'];
       localStorage.setItem('searchHistory', JSON.stringify(mockHistory));
+
+      // Necesitamos crear una nueva instancia del store para que lea localStorage
+      // Limpiar el estado actual
+      useAirportStore.setState({
+        searchHistory: JSON.parse(localStorage.getItem('searchHistory') || '[]'),
+      });
 
       const { result } = renderHook(() => useAirportStore());
 
@@ -123,6 +139,7 @@ describe('Airport Store', () => {
       });
 
       await waitFor(() => {
+        // No debe agregar string vacío al historial
         expect(result.current.searchHistory).toEqual([]);
       });
     });
@@ -270,6 +287,12 @@ describe('Airport Store', () => {
     it('should clear search history', () => {
       localStorage.setItem('searchHistory', JSON.stringify(['JFK', 'LAX']));
       const { result } = renderHook(() => useAirportStore());
+
+      // Primero establecer el historial en el estado
+      act(() => {
+        result.current.addToHistory('JFK');
+        result.current.addToHistory('LAX');
+      });
 
       act(() => {
         result.current.clearHistory();

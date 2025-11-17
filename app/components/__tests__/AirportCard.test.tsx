@@ -4,6 +4,15 @@ import { useThemeStore } from '../../stores/theme.store';
 
 jest.mock('../../stores/theme.store');
 
+// Mock de next/navigation a nivel de test
+const mockPush = jest.fn();
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}));
+
 const mockAirport = {
   airport_id: '1',
   airport_name: 'John F. Kennedy International Airport',
@@ -16,14 +25,9 @@ const mockAirport = {
 };
 
 describe('AirportCard Component', () => {
-  const mockRouterPush = jest.fn();
-
   beforeEach(() => {
     jest.clearAllMocks();
-    
-    jest.requireMock('next/navigation').useRouter.mockReturnValue({
-      push: mockRouterPush,
-    });
+    mockPush.mockClear();
 
     (useThemeStore as unknown as jest.Mock).mockReturnValue({
       theme: 'dark',
@@ -54,7 +58,7 @@ describe('AirportCard Component', () => {
     const card = screen.getByText('John F. Kennedy International Airport').closest('div');
     fireEvent.click(card!);
     
-    expect(mockRouterPush).toHaveBeenCalledWith('/airport/JFK');
+    expect(mockPush).toHaveBeenCalledWith('/airport/JFK');
   });
 
   it('should not navigate if iata_code is missing', () => {
@@ -65,7 +69,7 @@ describe('AirportCard Component', () => {
     const card = screen.getByText('John F. Kennedy International Airport').closest('div');
     fireEvent.click(card!);
     
-    expect(mockRouterPush).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
   });
 
   it('should apply hover effects with appropriate classes', () => {
@@ -127,7 +131,8 @@ describe('AirportCard Component', () => {
   it('should be keyboard accessible', () => {
     render(<AirportCard airport={mockAirport} />);
     
-    const card = screen.getByText('John F. Kennedy International Airport').closest('div');
+    // Buscar el div padre que tiene cursor-pointer (es el contenedor principal de la card)
+    const card = screen.getByText('John F. Kennedy International Airport').closest('div')?.parentElement;
     
     expect(card).toHaveClass('cursor-pointer');
   });

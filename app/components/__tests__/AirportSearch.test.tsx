@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AirportSearch from '../AirportSearch';
 import { useAirportStore } from '../../stores/airport.store';
@@ -11,8 +11,13 @@ describe('AirportSearch Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useAirportStore as unknown as jest.Mock).mockReturnValue({
-      fetchAirports: mockFetchAirports,
+    
+    // CORREGIDO: Mock como función que retorna el valor
+    (useAirportStore as unknown as jest.Mock).mockImplementation((selector) => {
+      const store = {
+        fetchAirports: mockFetchAirports,
+      };
+      return selector ? selector(store) : store;
     });
   });
 
