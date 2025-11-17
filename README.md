@@ -11,9 +11,6 @@ Vista previa (malla 4 columnas)
   <img src="./public/screenshots/Airport Search Light.png" />
 </div>
 
-
-Nota: GitHub soporta HTML en README, así que esto sí funciona.
-
 ✨ Características
 
 🔍 Búsqueda en tiempo real (con debounce)

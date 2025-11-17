@@ -23,7 +23,8 @@ import L from "leaflet";
 // Crear icono personalizado
 const createMarkerIcon = (theme: "light" | "dark") => {
   return new L.Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+    iconUrl: "/Map Point.png",
+    
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
