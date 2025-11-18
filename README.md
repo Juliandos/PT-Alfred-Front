@@ -5,10 +5,10 @@ Explorador de aeropuertos con información detallada y búsqueda en tiempo real,
 🖼️ Screenshots
 Vista previa (malla 4 columnas)
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
-  <img src="./public/screenshots/Landing.png" />
-  <img src="./public/screenshots/Landing Light.png" />
-  <img src="./public/screenshots/AirportSearch.png" />
-  <img src="./public/screenshots/Airport Search Light.png" />
+  <img src="./public/screenshoots/Landing.png" />
+  <img src="./public/screenshoots/Landing Light.png" />
+  <img src="./public/screenshoots/AirportSearch.png" />
+  <img src="./public/screenshoots/Airport Search Light.png" />
 </div>
 
 ✨ Características

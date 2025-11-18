@@ -107,10 +107,7 @@ export default function AirportDetails() {
               : "url(/airport-bg.jpg)",
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter:
-            theme === "light"
-              ? "brightness(0.7) contrast(1.15)"
-              : "brightness(0.25) contrast(1.3)",
+          
         }}
       />
       <div
