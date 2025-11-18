@@ -21,7 +21,7 @@ export default function AirportCard({ airport }: Props) {
   return (
     <div
       onClick={handleClick}
-      className="relative overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+      className="relative overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-white/60"
       style={{
         background: theme === "dark"
           ? "rgba(30, 41, 59, 0.7)"
@@ -32,10 +32,16 @@ export default function AirportCard({ airport }: Props) {
     >
       {/* División vertical al 60% - lado izquierdo (contenido) */}
       <div className="absolute inset-0 w-[60%]" style={{
-        background: theme === "dark"
-          ? "rgba(30, 41, 59, 0.5)"
-          : "rgba(241, 245, 249, 0.5)",
-      }} />
+          backgroundImage:
+            theme === "dark"
+              ? "linear-gradient(to right, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.08) 55%, rgba(255,255,255,0) 80%)"
+              : "linear-gradient(to right, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 55%, rgba(255,255,255,0) 80%)",
+          backgroundColor:
+            theme === "dark"
+              ? "rgba(30, 41, 59, 0.5)"
+              : "rgba(241, 245, 249, 0.5)",
+          backgroundBlendMode: "overlay",
+        }} />
 
       {/* División vertical al 60% - lado derecho (imagen) */}
       <div 
@@ -81,23 +87,15 @@ export default function AirportCard({ airport }: Props) {
         </div>
       </div>
 
-      {/* Icono de avión en la esquina superior derecha */}
+      {/* Icono de avión en la esquina superior derecha - SIN FILTROS */}
       <div
-        className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center"
-        style={{
-          background: theme === "dark"
-            ? "rgba(59, 130, 246, 0.4)"
-            : "rgba(37, 99, 235, 0.3)",
-        }}
-      >
+        className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center">
         <Image
           src="/PlaneIcon.png"
           alt="Airplane"
-          width={24}
-          height={24}
-          style={{
-            filter: theme === "dark" ? "brightness(0) invert(1)" : "brightness(0) invert(1)",
-          }}
+          width={40}
+          height={40}
+          // SIN filtros - muestra la imagen original
         />
       </div>
     </div>

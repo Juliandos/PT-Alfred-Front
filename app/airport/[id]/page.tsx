@@ -146,27 +146,37 @@ export default function AirportDetails() {
             </h1>
 
             {/* Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    activeTab === tab.id
-                      ? "bg-blue-600 text-white"
-                      : theme === "dark"
-                      ? "bg-gray-800/50 text-gray-300 hover:bg-gray-800/70"
-                      : "bg-gray-200/80 text-gray-700 hover:bg-gray-300/80"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            <div className="w-full max-w-4xl mx-auto mb-8">
+              <div
+                className={`flex w-full rounded-xl overflow-hidden ${
+                  theme === "dark" ? "bg-gray-700/40" : "bg-gray-300/40"
+                }`}
+              >
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 py-3 text-center font-semibold text-sm transition-all duration-300
+                      ${
+                        activeTab === tab.id
+                          ? theme === "dark"
+                            ? "bg-blue-600 text-white"
+                            : "bg-blue-600 text-white"
+                          : theme === "dark"
+                          ? "text-gray-300 hover:bg-gray-700/60"
+                          : "text-gray-700 hover:bg-gray-400/50"
+                      }
+                    `}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Contenido de tabs */}
-          <div className="space-y-6">
+          <div className="space-y-6 ">
             {/* Tab: General */}
             {activeTab === "general" && (
               <InfoCard
@@ -287,23 +297,33 @@ function InfoCard({
 }) {
   return (
     <div
-      className="relative overflow-hidden rounded-lg"
+      className="relative overflow-hidden rounded-lg border border-white/60"
       style={{
-        background: theme === "dark"
-          ? "rgba(30, 41, 59, 0.7)"
-          : "rgba(241, 245, 249, 0.9)",
-        backdropFilter: "blur(10px)",
-        minHeight: "120px",
-      }}
+            backgroundImage: theme === "light" 
+              ? "url(/airport-bg-light.jpg)" 
+              : "url(/airport-bg.jpg)",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            filter: theme === "light" ? "brightness(1.1) contrast(1.05)" : "brightness(0.6) contrast(1.1)",
+          }}
     >
-      {/* División vertical al 70% - lado izquierdo (contenido) */}
-      <div className="absolute inset-0 w-[70%]" style={{
-        background: theme === "dark"
-          ? "rgba(30, 41, 59, 0.5)"
-          : "rgba(241, 245, 249, 0.5)",
-      }} />
+      {/* División horizontal al 70% - lado izquierdo (contenido) */}
+      <div
+        className="absolute inset-0 w-[70%]"
+        style={{
+          backgroundImage:
+            theme === "dark"
+              ? "linear-gradient(to right, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.08) 55%, rgba(255,255,255,0) 80%)"
+              : "linear-gradient(to right, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 55%, rgba(255,255,255,0) 80%)",
+          backgroundColor:
+            theme === "dark"
+              ? "rgba(30, 41, 59, 0.5)"
+              : "rgba(241, 245, 249, 0.5)",
+          backgroundBlendMode: "overlay",
+        }}
+      />
 
-      {/* División vertical al 70% - lado derecho (imagen) */}
+      {/* División horizontal al 70% - lado derecho (imagen) */}
       <div 
         className="absolute top-0 right-0 bottom-0 w-[30%]"
         style={{
@@ -348,7 +368,7 @@ function InfoCard({
 // Componente para las filas de información
 function InfoRow({ label, value, theme }: { label: string; value: string; theme: "light" | "dark" }) {
   return (
-    <div className="flex">
+    <div className="flex ">
       <span className={`font-semibold min-w-[120px] ${
         theme === "dark" ? "text-gray-300" : "text-gray-700"
       }`}>
