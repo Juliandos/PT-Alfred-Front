@@ -299,13 +299,12 @@ function InfoCard({
     <div
       className="relative overflow-hidden rounded-lg border border-white/60"
       style={{
-            backgroundImage: theme === "light" 
-              ? "url(/airport-bg-light.jpg)" 
-              : "url(/airport-bg.jpg)",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            filter: theme === "light" ? "brightness(1.1) contrast(1.05)" : "brightness(0.6) contrast(1.1)",
-          }}
+        background: theme === "dark"
+          ? "rgba(30, 41, 59, 0.7)"
+          : "rgba(241, 245, 249, 0.9)",
+        backdropFilter: "blur(10px)",
+        minHeight: "120px",
+      }}
     >
       {/* División horizontal al 70% - lado izquierdo (contenido) */}
       <div
