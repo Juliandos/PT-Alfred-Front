@@ -109,7 +109,7 @@ export default function Home() {
                 />
                 <button
                   onClick={handleSearch}
-                  className={`px-4 md:px-6 py-2 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 hover:scale-105 active:scale-95 ${
+                  className={`px-4 md:px-6 py-2 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 hover:scale-105 active:scale-95 border border-white/60 ${
                     theme === "dark"
                       ? "bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-400 border-2 border-cyan-300/50 text-white shadow-[0_4px_16px_rgba(0,249,255,0.4)] hover:shadow-[0_6px_20px_rgba(0,249,255,0.6)]"
                       : "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 border-2 border-blue-400/60 text-white shadow-[0_4px_16px_rgba(0,106,255,0.5)] hover:shadow-[0_6px_20px_rgba(0,106,255,0.7)]"
@@ -167,9 +167,9 @@ export default function Home() {
       />
 
       {/* Título arriba */}
-      <div className="absolute top-16 md:top-30 left-0 right-0 z-10">
+      <div className="absolute top-16 md:top-20 left-0 right-0 z-10">
         <h1
-          className={`font-montserrat-black text-3xl sm:text-5xl md:text-7xl lg:text-[80px] text-center leading-tight tracking-tight transition-all duration-500 px-4 ${
+          className={`font-montserrat-black text-4xl sm:text-5xl md:text-7xl lg:text-[88.91px] text-center leading-tight tracking-tight transition-all duration-500 px-4 ${
             theme === "dark" ? "gradient-text" : ""
           }`}
           style={
@@ -193,7 +193,7 @@ export default function Home() {
       </div>
 
       {/* Input y botón centrados */}
-      <div className="relative z-10 w-full max-w-[780px] px-4 flex flex-col items-center gap-4">
+      <div className="relative z-10 w-full max-w-[780px] px-4">
 
         {/* INPUT */}
         <input
@@ -211,37 +211,36 @@ export default function Home() {
           }`}
         />
 
-        {/* BOTÓN FUERA DEL INPUT */}
-        <button
-          onClick={handleSearch}
-          className="
-            backdrop-blur-md
-            bg-gradient-to-r from-[#0A63E8]/60 via-[#12C7E8]/60 to-[#11E6C4]/60
-            border border-white/60
-            rounded-2xl
-            px-9
-            h-[62px]
-            flex items-center gap-4
-            text-white
-            font-medium text-xl
-            transition-all duration-300
-            hover:scale-[1.03] active:scale-95
-          "
-        >
-          <div className="w-6 h-6 bg-white/40 rounded-full relative">
-            <div className="absolute bottom-0 right-0 w-[10px] h-[3px] bg-white/60 rotate-45 rounded" />
-          </div>
-          <span>Buscar</span>
-        </button>
+        {/* BOTÓN CON OPACIDAD - Posición fija */}
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={handleSearch}
+            className={`px-12 py-4 rounded-[20px] font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 border-2 min-w-[200px] backdrop-blur-md ${
+              theme === "dark"
+                ? "bg-gradient-to-r from-blue-600/60 via-cyan-500/60 to-teal-400/60 border-white/30 text-white shadow-[0_8px_32px_rgba(0,249,255,0.4)] hover:shadow-[0_12px_40px_rgba(0,249,255,0.6)]"
+                : "bg-gradient-to-r from-blue-600/65 via-blue-500/65 to-cyan-500/65 border-blue-400/60 text-white shadow-[0_8px_32px_rgba(0,106,255,0.5)] hover:shadow-[0_12px_40px_rgba(0,106,255,0.7)]"
+            }`}
+          >
+            <div className="flex items-center justify-center gap-3">
+              <SearchIcon size={24} />
+              <span>Buscar</span>
+            </div>
+          </button>
+        </div>
 
-        {/* HISTORIAL */}
+        {/* HISTORIAL - Posición absoluta para no afectar el layout */}
         {inputFocused && searchHistory.length > 0 && (
-          <div className={`w-full backdrop-blur-md rounded-xl p-4 shadow-md border animate-fadeIn transition-all duration-300 ${
-            theme === "dark"
-              ? "bg-white/10 border-white/10"
-              : "bg-white/90 border-blue-200/30 shadow-lg"
-          }`}>
-
+          <div 
+            className={`absolute left-4 right-4 backdrop-blur-md rounded-xl p-4 shadow-md border animate-fadeIn transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-white/10 border-white/10"
+                : "bg-white/90 border-blue-200/30 shadow-lg"
+            }`}
+            style={{
+              top: "calc(100% + 80px)", // Debajo del botón
+              zIndex: 50,
+            }}
+          >
             <div className="flex justify-between items-center mb-2">
               <h3 className={`font-semibold ${
                 theme === "dark" ? "text-cyan-300" : "text-blue-600"

@@ -1,6 +1,6 @@
 import { apiClient } from "./apiClient";
 
-const API_KEY = "7933e6bf8c8f0c1a231b883081c820e7";
+const API_KEY = "a975177911650c625b840a9fa8434af6";
 
 /**
  * 🛫 Obtener lista de aeropuertos desde la API real

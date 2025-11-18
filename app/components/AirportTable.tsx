@@ -47,7 +47,8 @@ export default function AirportTable({ data, loading }: Props) {
 
   return (
     <div className="mt-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* CAMBIO: grid-cols-2 en lugar de grid-cols-3 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {data.map((airport: any, index: number) => (
           <AirportCard key={airport.iata_code || index} airport={airport} />
         ))}
